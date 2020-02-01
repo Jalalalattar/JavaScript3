@@ -1,0 +1,34 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(rgb(60, 163, 177),rgb(47,150,163),rgb(48,62,143));
+    color: whitesmoke;
+}
+.location, .temperature{
+    height: 30vh;
+    width: 50%;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.temperature{
+    flex-direction: column;
+}
+.dagree-section{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.dagree-section span{
+    margin: 10px;
+    font-size: 20px;
+}

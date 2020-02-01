@@ -1,0 +1,87 @@
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+  
+body {
+    padding: 25px;
+}
+
+img {
+    /* it's not working */
+    width: 50px!important ;
+    height: 50px!important;
+    margin-right: 25px !important;
+}
+.alert-error {
+    margin-top: 2px;
+    padding: 20px;
+    padding-left: 25px;
+    border-radius: 6px;
+    color: brown;
+    background-color: #f0c6ca;
+}
+header {
+    font-weight: lighter;
+    background-color: #253dc5;
+    padding: 30px;
+    padding-left: 25px;
+    color: whitesmoke;
+}
+select{
+    width: 250px;
+    height: 35px;
+}
+table {
+    width: 100%;
+    margin-top: 3px;
+    padding: 20px;
+    border: 1px solid rgb(240, 240, 240) ;
+    border-radius: 4px;
+    box-shadow: 0px 3px 3px  rgb(179, 178, 178) ;
+    color: #333;
+}
+th {
+    width: 10%;
+    padding: 3px;
+    display: flex;  
+}
+tr {
+    display: flex;
+    justify-content: space-between;
+}
+li:nth-child(even) {
+    background: rgb(224, 224, 224);
+}
+li {
+    list-style: none;
+}
+.smallNumbers {
+    padding: 5px;
+    display: flex;
+    align-self: center;
+    background-color: rgb(156, 148, 148);
+    color: whitesmoke;
+    border-radius: 5px;
+    font-size: 12px;
+}
+a {
+    display: flex;
+    align-self: center;
+}
+.main-container {
+    display: flex;
+}
+.repo-container,
+.contributors-container {
+    width: 100%;
+}
+.repo-container{  
+    background-color: #ebebeb;
+}
+ul{
+    background-color: white;
+}
