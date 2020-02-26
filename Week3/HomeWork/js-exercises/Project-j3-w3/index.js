@@ -1,7 +1,7 @@
 'use strict';
 {
   
-      //  window.onload = () => main(HYF_REPOS_URL_ERROR); // to get ERROR
+  //  window.onload = () => main(HYF_REPOS_URL_ERROR); // to get ERROR
   //  const HYF_REPOS_URL_ERROR ='https://api.github.com/orgsX/HackYourFuture/repos?per_page=100';
 
   window.onload = () => main(HYF_REPOS_URL);
@@ -39,9 +39,58 @@
       }
     }
   }
-  function renderContributors(url, container) {
-    fetch(url)
-      .then(res => res.json())
+
+  // function listOfData(contributors) {
+  //   contributors.forEach(contributor => {
+  //     const divCont = createAndAppend('div', container, {
+  //       class: 'userContributors',
+  //     });
+  //     const img = createAndAppend('img', divCont);
+  //     img.src = contributor.avatar_url;
+
+  //     const pName = createAndAppend('p', divCont);
+
+  //     createAndAppend('a', pName, {
+  //       text: contributor.login,
+  //       href: contributor.html_url,
+  //       target:'_blank',
+  //     })
+  //     const pContributes = createAndAppend('p', divCont, {
+  //       class: 'contributes',
+  //     });
+      
+  //     createAndAppend('span', pContributes, {
+  //       text:contributor.contributions
+  //     });
+  //   });
+  // }
+
+  // async function fetchJson(){
+  //   const response = await fetch(url);
+  //   const json = await response.json()
+  //   return json;
+  // }
+
+  // async function renderContributors(url, container) {
+  //   try {
+  //     let json = await fetchJson()
+  //     listOfData(json)
+     
+  //   }
+  //   catch (err) {
+  //     createAndAppend('div', container, {
+  //       text: err.message,
+  //       class: 'alert-error',
+  //     });
+  //   };
+    
+  // }
+  async function renderContributors(url, container) {
+    try {
+      const response = await fetch(url);
+      const repos = await response.json()
+      
+      // it's only works if you add .then :(  what I have to do >>?
       .then(contributors => {
         contributors.forEach(contributor => {
           const divCont = createAndAppend('div', container, {
@@ -60,18 +109,20 @@
           const pContributes = createAndAppend('p', divCont, {
             class: 'contributes',
           });
-
+          
           createAndAppend('span', pContributes, {
             text:contributor.contributions
           });
         });
       })
-      .catch(err => {
-        createAndAppend('div', container, {
-          text: err.message,
-          class: 'alert-error',
-        });
-    });
+    }
+    catch (err) {
+      createAndAppend('div', container, {
+        text: err.message,
+        class: 'alert-error',
+      });
+    };
+    
   }
 
   function renderContents(repo, table, contributorsContainer) {
@@ -90,37 +141,38 @@
     renderContributors(repo.contributors_url, divContributors);
   }
 
-  function main(url) {
-    const root = document.getElementById('root');
-    const reposContainer = document.getElementById('repos');
-    const contributorsContainer = document.getElementById('contributors');
-    const select = document.querySelector('#repos-select');
-    const table = createAndAppend('table', reposContainer);
+  const root = document.getElementById('root');
 
-    fetch(url)
-      .then(res => res.json())
-      .then(repos => {
-        repos
-          .sort((a, b) => {
-            return a.name.localeCompare(b.name);
-          })
-          .forEach((repo, index) => {
-            createAndAppend('option', select, {
-              value: index,
-              text: repo.name,
+  async function main(url) {
+    try {
+      const reposContainer = document.getElementById('repos');
+      const contributorsContainer = document.getElementById('contributors');
+      const select = document.querySelector('#repos-select');
+      const table = createAndAppend('table', reposContainer);
+
+      const response = await fetch(url);
+      const repos = await response.json();
+      
+          repos.sort((a, b) => {
+              return a.name.localeCompare(b.name);
+            })
+            .forEach((repo, index) => {
+              createAndAppend('option', select, {
+                value: index,
+                text: repo.name,
+              });
             });
-          });
 
-        select.addEventListener('change', () => {
-          renderContents(repos[select.value], table, contributorsContainer);
-        });
-      })
-      .catch(err => {
-        createAndAppend('p', root, {
-          text: err.message,
-          class: 'alert-error',
-        });
+          select.addEventListener('change', () => {
+            renderContents(repos[select.value], table, contributorsContainer);
+          });
+    }
+    catch (err) {
+      createAndAppend('p', root, {
+        text: err.message,
+        class: 'alert-error',
       });
+    };
   }
 
 }
