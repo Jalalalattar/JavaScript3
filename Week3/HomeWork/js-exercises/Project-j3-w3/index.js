@@ -7,6 +7,7 @@
   window.onload = () => main(HYF_REPOS_URL);
   const HYF_REPOS_URL ='https://api.github.com/orgs/HackYourFuture/repos?per_page=100';
 
+  const root = document.getElementById('root');
 
   function createAndAppend(name, parent, options = {}) {
     const el = document.createElement(name);
@@ -19,6 +20,20 @@
         }
   });
   return el;
+  }
+
+  async function axiosJSON(url, container) {
+    try {
+      const response = await axios.get(url);
+      const data = response.data;
+      return data;
+    } 
+    catch (err) {
+      createAndAppend('p', container, {
+        text: err,
+        class: 'alert-error',
+      });
+    }
   }
 
   function renderRepoDetails(repo, table) {
@@ -40,58 +55,10 @@
     }
   }
 
-  // function listOfData(contributors) {
-  //   contributors.forEach(contributor => {
-  //     const divCont = createAndAppend('div', container, {
-  //       class: 'userContributors',
-  //     });
-  //     const img = createAndAppend('img', divCont);
-  //     img.src = contributor.avatar_url;
-
-  //     const pName = createAndAppend('p', divCont);
-
-  //     createAndAppend('a', pName, {
-  //       text: contributor.login,
-  //       href: contributor.html_url,
-  //       target:'_blank',
-  //     })
-  //     const pContributes = createAndAppend('p', divCont, {
-  //       class: 'contributes',
-  //     });
-      
-  //     createAndAppend('span', pContributes, {
-  //       text:contributor.contributions
-  //     });
-  //   });
-  // }
-
-  // async function fetchJson(){
-  //   const response = await fetch(url);
-  //   const json = await response.json()
-  //   return json;
-  // }
-
-  // async function renderContributors(url, container) {
-  //   try {
-  //     let json = await fetchJson()
-  //     listOfData(json)
-     
-  //   }
-  //   catch (err) {
-  //     createAndAppend('div', container, {
-  //       text: err.message,
-  //       class: 'alert-error',
-  //     });
-  //   };
-    
-  // }
   async function renderContributors(url, container) {
     try {
-      const response = await fetch(url);
-      const repos = await response.json()
-      
-      // it's only works if you add .then :(  what I have to do >>?
-      .then(contributors => {
+      axiosJSON(url, container)
+      .then (contributors => {
         contributors.forEach(contributor => {
           const divCont = createAndAppend('div', container, {
             class: 'userContributors',
@@ -122,8 +89,7 @@
         class: 'alert-error',
       });
     };
-    
-  }
+  };
 
   function renderContents(repo, table, contributorsContainer) {
     table.innerText = '';
@@ -141,8 +107,6 @@
     renderContributors(repo.contributors_url, divContributors);
   }
 
-  const root = document.getElementById('root');
-
   async function main(url) {
     try {
       const reposContainer = document.getElementById('repos');
@@ -150,8 +114,8 @@
       const select = document.querySelector('#repos-select');
       const table = createAndAppend('table', reposContainer);
 
-      const response = await fetch(url);
-      const repos = await response.json();
+      const response = await axios.get(url);
+      const repos = await response.data;
       
           repos.sort((a, b) => {
               return a.name.localeCompare(b.name);
@@ -173,6 +137,5 @@
         class: 'alert-error',
       });
     };
-  }
-
-}
+  };
+};

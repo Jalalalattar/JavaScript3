@@ -11,10 +11,9 @@ body {
 }
 
 img {
-    /* it's not working */
-    width: 50px!important ;
-    height: 50px!important;
-    margin-right: 25px !important;
+    max-width: 50px ;
+    height: 50px;
+    margin-right: 25px;
 }
 .alert-error {
     margin-top: 2px;
@@ -49,7 +48,7 @@ th {
     padding: 3px;
     display: flex;  
 }
-tr {
+.repo-container {
     display: flex;
     justify-content: space-between;
 }
@@ -61,12 +60,11 @@ li {
 }
 .smallNumbers {
     padding: 5px;
-    display: flex;
-    align-self: center;
     background-color: rgb(156, 148, 148);
     color: whitesmoke;
     border-radius: 5px;
     font-size: 12px;
+    float:right;
 }
 a {
     display: flex;
@@ -74,9 +72,10 @@ a {
 }
 .main-container {
     display: flex;
+    width: 100%;
 }
 .repo-container,
-.contributors-container {
+.contributors-container,ul {
     width: 100%;
 }
 .repo-container{  
