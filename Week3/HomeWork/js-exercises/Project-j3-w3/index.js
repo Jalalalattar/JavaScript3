@@ -1,11 +1,11 @@
 'use strict';
 {
-  
+
   //  window.onload = () => main(HYF_REPOS_URL_ERROR); // to get ERROR
   //  const HYF_REPOS_URL_ERROR ='https://api.github.com/orgsX/HackYourFuture/repos?per_page=100';
 
   window.onload = () => main(HYF_REPOS_URL);
-  const HYF_REPOS_URL ='https://api.github.com/orgs/HackYourFuture/repos?per_page=100';
+  const HYF_REPOS_URL = 'https://api.github.com/orgs/HackYourFuture/repos?per_page=100';
 
   const root = document.getElementById('root');
 
@@ -13,13 +13,13 @@
     const el = document.createElement(name);
     parent.appendChild(el);
     Object.entries(options).forEach(([key, value]) => {
-        if (key === 'text') {
-            el.textContent = value;
-        } else {
-            el.setAttribute(key, value);
-        }
-  });
-  return el;
+      if (key === 'text') {
+        el.textContent = value;
+      } else {
+        el.setAttribute(key, value);
+      }
+    });
+    return el;
   }
 
   async function axiosJSON(url, container) {
@@ -27,7 +27,7 @@
       const response = await axios.get(url);
       const data = response.data;
       return data;
-    } 
+    }
     catch (err) {
       createAndAppend('p', container, {
         text: err,
@@ -57,31 +57,31 @@
 
   async function renderContributors(url, container) {
     try {
-      axiosJSON(url, container)
-      .then (contributors => {
-        contributors.forEach(contributor => {
-          const divCont = createAndAppend('div', container, {
-            class: 'userContributors',
-          });
-          const img = createAndAppend('img', divCont);
-          img.src = contributor.avatar_url;
-
-          const pName = createAndAppend('p', divCont);
-
-          createAndAppend('a', pName, {
-            text: contributor.login,
-            href: contributor.html_url,
-            target:'_blank',
-          })
-          const pContributes = createAndAppend('p', divCont, {
-            class: 'contributes',
-          });
-          
-          createAndAppend('span', pContributes, {
-            text:contributor.contributions
-          });
+      
+      const contributors = await axiosJSON(url, container);
+      contributors.forEach(contributor => {
+        const divCont = createAndAppend('div', container, {
+          class: 'userContributors',
         });
-      })
+        const img = createAndAppend('img', divCont);
+        img.src = contributor.avatar_url;
+
+        const pName = createAndAppend('p', divCont);
+
+        createAndAppend('a', pName, {
+          text: contributor.login,
+          href: contributor.html_url,
+          target: '_blank',
+        })
+        const pContributes = createAndAppend('p', divCont, {
+          class: 'contributes',
+        });
+
+        createAndAppend('span', pContributes, {
+          text: contributor.contributions
+        });
+      });
+
     }
     catch (err) {
       createAndAppend('div', container, {
@@ -116,20 +116,20 @@
 
       const response = await axios.get(url);
       const repos = await response.data;
-      
-          repos.sort((a, b) => {
-              return a.name.localeCompare(b.name);
-            })
-            .forEach((repo, index) => {
-              createAndAppend('option', select, {
-                value: index,
-                text: repo.name,
-              });
-            });
 
-          select.addEventListener('change', () => {
-            renderContents(repos[select.value], table, contributorsContainer);
+      repos.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      })
+        .forEach((repo, index) => {
+          createAndAppend('option', select, {
+            value: index,
+            text: repo.name,
           });
+        });
+
+      select.addEventListener('change', () => {
+        renderContents(repos[select.value], table, contributorsContainer);
+      });
     }
     catch (err) {
       createAndAppend('p', root, {
